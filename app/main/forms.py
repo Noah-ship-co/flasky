@@ -28,7 +28,7 @@ class EditProfileAdminForm(FlaskForm):
                'Usernames must have only letters, numbers, dots or '
                'underscores')])
     confirmed = BooleanField('Confirmed')
-    role = SelectField('Role', coerce=int)
+    role = SelectField('Role', coerce=int) # coerce=int 的作用是：把表单提交上来的选项值转换成 int 类型。
     name = StringField('Real name', validators=[Length(0, 64)])
     location = StringField('Location', validators=[Length(0, 64)])
     about_me = TextAreaField('About me')
@@ -52,7 +52,8 @@ class EditProfileAdminForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    body = PageDownField("What's on your mind?", validators=[DataRequired()])
+    # 带 Markdown 实时预览功能的多行文本框,使用还需要pagedown=Pagedown(),模板引入JS,{{pagedown.include_pagedown()}}
+    body = PageDownField("What's on your mind?", validators=[DataRequired()]) 
     submit = SubmitField('Submit')
 
 

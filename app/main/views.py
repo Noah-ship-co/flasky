@@ -8,21 +8,21 @@ from .. import db
 from ..models import Permission, Role, User, Post, Comment
 from ..decorators import admin_required, permission_required
 
-
+# response 是 Flask 最终准备发给客户端的响应对象,用户发起请求->视图函数处理请求->after_request被调用处理response->返回最终response给浏览器
 @main.after_app_request
 def after_request(response):
     return response
 
-
-@main.route('/shutdown')
-def server_shutdown():
-    if not current_app.testing:
-        abort(404)
-    shutdown = request.environ.get('werkzeug.server.shutdown')
-    if not shutdown:
-        abort(500)
-    shutdown()
-    return 'Shutting down...'
+# Werkzeug2.1已移除werkzeug.server.shutdown这个非标准关闭函数,故此处源码移除,推荐使用app.test_client()
+# @main.route('/shutdown')
+# def server_shutdown():
+#     if not current_app.testing:
+#         abort(404)
+#     shutdown = request.environ.get('werkzeug.server.shutdown')
+#     if not shutdown:
+#         abort(500)
+#     shutdown()
+#     return 'Shutting down...'
 
 
 @main.route('/', methods=['GET', 'POST'])

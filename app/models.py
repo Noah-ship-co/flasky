@@ -10,7 +10,7 @@ from flask_login import UserMixin, AnonymousUserMixin
 from app.exceptions import ValidationError
 from . import db, login_manager
 
-
+# replace(tzinfo=None)为去掉时区信息
 def utc_now():
     return datetime.now(UTC).replace(tzinfo=None)
 
