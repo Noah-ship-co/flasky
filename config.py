@@ -42,7 +42,7 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-    SERVER_NAME = os.environ['SERVER_NAME']  # configure the domain name in use
+    SERVER_NAME = os.environ.get('SERVER_NAME')
 
     @classmethod
     def init_app(cls, app):
@@ -76,11 +76,9 @@ class HerokuConfig(ProductionConfig):
         ProductionConfig.init_app(app)
 
         # handle reverse proxy server headers
-        try:
-            from werkzeug.middleware.proxy_fix import ProxyFix
-        except ImportError:
-            from werkzeug.contrib.fixers import ProxyFix
-        app.wsgi_app = ProxyFix(app.wsgi_app)
+        from werkzeug.middleware.proxy_fix import ProxyFix
+        app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1,
+                                x_host=1, x_prefix=1)
 
         # log to stderr
         import logging

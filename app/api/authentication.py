@@ -24,7 +24,7 @@ def verify_password(email_or_token, password):
 
 
 @auth.error_handler
-def auth_error():
+def auth_error(status):
     return unauthorized('Invalid credentials')
 
 
